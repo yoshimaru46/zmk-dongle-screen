@@ -151,6 +151,12 @@ config DONGLE_SCREEN_MODIFIER_ACTIVE
     help
       If the Modifier Widget should be active or not
 
+config DONGLE_SCREEN_KEY_ACTIVE
+    bool "Pressed Key Widget active"
+    default n
+    help
+      If the Pressed Key Widget (shows non-modifier keys currently held) should be active or not
+
 config DONGLE_SCREEN_LAYER_ACTIVE
     bool "Layer Widget active"
     default y

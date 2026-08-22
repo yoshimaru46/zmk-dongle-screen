@@ -31,6 +31,11 @@ static struct zmk_widget_wpm_status wpm_status_widget;
 static struct zmk_widget_mod_status mod_widget;
 #endif
 
+#if CONFIG_DONGLE_SCREEN_KEY_ACTIVE
+#include "widgets/key_status.h"
+static struct zmk_widget_key_status key_widget;
+#endif
+
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -74,6 +79,11 @@ lv_obj_t *zmk_display_status_screen()
 #if CONFIG_DONGLE_SCREEN_MODIFIER_ACTIVE
     zmk_widget_mod_status_init(&mod_widget, screen);
     lv_obj_align(zmk_widget_mod_status_obj(&mod_widget), LV_ALIGN_CENTER, 0, 35);
+#endif
+
+#if CONFIG_DONGLE_SCREEN_KEY_ACTIVE
+    zmk_widget_key_status_init(&key_widget, screen);
+    lv_obj_align(zmk_widget_key_status_obj(&key_widget), LV_ALIGN_CENTER, 0, 65);
 #endif
 
     return screen;
