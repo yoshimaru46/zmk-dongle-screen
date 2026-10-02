@@ -175,6 +175,15 @@ config DONGLE_SCREEN_BATTERY_ACTIVE
     help
       If the Battery Widget should be active or not
 
+config DONGLE_SCREEN_AGENT_ACTIVE
+    bool "Agent Status Widget active"
+    default n
+    depends on RAW_HID
+    help
+      Shows coding agent states sent by the host over Raw HID (needs the zmk-raw-hid module).
+      While the host reports agents, the agent list takes over the screen and the other
+      widgets are hidden; the layer name and battery levels move to a one-line header.
+
 config DONGLE_SCREEN_AMBIENT_LIGHT
     bool "Enable automatic brightness via ambient light sensor"
     default n
