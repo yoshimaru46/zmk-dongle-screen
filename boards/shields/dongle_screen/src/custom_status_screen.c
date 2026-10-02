@@ -36,10 +36,51 @@ static struct zmk_widget_mod_status mod_widget;
 static struct zmk_widget_key_status key_widget;
 #endif
 
+#if CONFIG_DONGLE_SCREEN_AGENT_ACTIVE
+#include "widgets/agent_status.h"
+static struct zmk_widget_agent_status agent_status_widget;
+#endif
+
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 lv_style_t global_style;
+
+#if CONFIG_DONGLE_SCREEN_AGENT_ACTIVE
+static void set_hidden(lv_obj_t *obj, bool hidden)
+{
+    if (hidden)
+    {
+        lv_obj_add_flag(obj, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        lv_obj_clear_flag(obj, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+static void agent_active_changed(bool active)
+{
+#if CONFIG_DONGLE_SCREEN_OUTPUT_ACTIVE
+    set_hidden(zmk_widget_output_status_obj(&output_status_widget), active);
+#endif
+#if CONFIG_DONGLE_SCREEN_WPM_ACTIVE
+    set_hidden(zmk_widget_wpm_status_obj(&wpm_status_widget), active);
+#endif
+#if CONFIG_DONGLE_SCREEN_MODIFIER_ACTIVE
+    set_hidden(zmk_widget_mod_status_obj(&mod_widget), active);
+#endif
+#if CONFIG_DONGLE_SCREEN_KEY_ACTIVE
+    set_hidden(zmk_widget_key_status_obj(&key_widget), active);
+#endif
+#if CONFIG_DONGLE_SCREEN_LAYER_ACTIVE
+    set_hidden(zmk_widget_layer_status_obj(&layer_status_widget), active);
+#endif
+#if CONFIG_DONGLE_SCREEN_BATTERY_ACTIVE
+    set_hidden(zmk_widget_dongle_battery_status_obj(&dongle_battery_status_widget), active);
+#endif
+}
+#endif
 
 lv_obj_t *zmk_display_status_screen()
 {
@@ -84,6 +125,11 @@ lv_obj_t *zmk_display_status_screen()
 #if CONFIG_DONGLE_SCREEN_KEY_ACTIVE
     zmk_widget_key_status_init(&key_widget, screen);
     lv_obj_align(zmk_widget_key_status_obj(&key_widget), LV_ALIGN_CENTER, 0, 65);
+#endif
+
+#if CONFIG_DONGLE_SCREEN_AGENT_ACTIVE
+    zmk_widget_agent_status_init(&agent_status_widget, screen, agent_active_changed);
+    lv_obj_align(zmk_widget_agent_status_obj(&agent_status_widget), LV_ALIGN_TOP_MID, 0, 0);
 #endif
 
     return screen;
