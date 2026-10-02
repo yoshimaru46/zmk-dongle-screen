@@ -143,16 +143,21 @@ static void draw_row(struct row_object *row, const struct agent_row *data)
         return;
     }
 
+    // 色は OpenAI Codex Micro のエージェントキーに合わせる(idle の白だけは行全体を塗ると目立ちすぎるので外す)
     switch (data->status)
     {
     case AGENT_BLOCKED:
-        bg = lv_color_hex(0xD32F2F);
+        bg = lv_color_hex(0xFFA000);
+        fg = lv_color_hex(0x1A1A1A);
         break;
     case AGENT_DONE:
         bg = lv_color_hex(0x2E7D32);
         break;
     case AGENT_WORKING:
         bg = lv_color_hex(0x1565C0);
+        break;
+    case AGENT_UNKNOWN:
+        bg = lv_color_hex(0xD32F2F);
         break;
     default:
         bg = lv_color_hex(0x2A2A2A);
