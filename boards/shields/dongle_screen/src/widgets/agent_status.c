@@ -135,7 +135,8 @@ static void set_active(bool value)
 static void draw_row(struct row_object *row, const struct agent_row *data)
 {
     lv_color_t bg;
-    lv_color_t fg = lv_color_white();
+    // 地の色が明るいので文字は暗くする
+    lv_color_t fg = lv_color_hex(0x1A1A1A);
 
     if (data->status == AGENT_NONE)
     {
@@ -143,25 +144,22 @@ static void draw_row(struct row_object *row, const struct agent_row *data)
         return;
     }
 
-    // 色は OpenAI Codex Micro のエージェントキーに合わせる(idle の白だけは行全体を塗ると目立ちすぎるので外す)
+    // 色は herdr-app のサイドバー(既定テーマ graphite の dark)に合わせる。
+    // idle と unknown は行全体を塗ると目立ちすぎるので、文字色だけにする
     switch (data->status)
     {
     case AGENT_BLOCKED:
-        bg = lv_color_hex(0xFFA000);
-        fg = lv_color_hex(0x1A1A1A);
+        bg = lv_color_hex(0xF0705F);
         break;
     case AGENT_DONE:
-        bg = lv_color_hex(0x2E7D32);
+        bg = lv_color_hex(0x76A8FF);
         break;
     case AGENT_WORKING:
-        bg = lv_color_hex(0x1565C0);
-        break;
-    case AGENT_UNKNOWN:
-        bg = lv_color_hex(0xD32F2F);
+        bg = lv_color_hex(0xE5C07B);
         break;
     default:
         bg = lv_color_hex(0x2A2A2A);
-        fg = lv_color_hex(COLOR_MUTED);
+        fg = lv_color_hex(0x696A6D);
         break;
     }
 
